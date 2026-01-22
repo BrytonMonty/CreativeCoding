@@ -1,0 +1,599 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="UTF-8">
+
+<title> Eternal Motion </title>
+
+<!-- import external .js scripts here -->
+
+<!-- <script type="text/javascript" src="#" ></script> -->
+
+<!-- modify CSS properties here -->
+
+<style type="text/css">
+body,td,th {
+font-family: Monaco, "Courier New", "monospace";
+font-size: 14px;
+color: rgba(255,255,255,1);
+}
+
+body {
+background-color: rgba(0,0,0,1);
+}
+
+#container {
+position: relative;
+text-align: left;
+width: 95%;
+height: 800px;
+}
+
+#fmxCanvas {
+position: relative;
+background-color:rgba(255,255,255,1);
+border: rgba(255,255,255,1) thin dashed;
+margin: 10px;
+cursor: crosshair;
+display: inline-block;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div id="container">
+<!-- START HTML CODE HERE -->
+
+<canvas id="fmxCanvas" width="900" height="900"></canvas>
+
+<div id="display"></div>
+
+<br><br>
+<img src="Torso.png" id="torso" />
+<img src="LeftArm.png"  id="leftArm" />
+<img src="RightArm.png"  id="rightArm" />
+<img src="LeftHand.png"  id="leftHand" />
+<img src="RightHand.png"  id="rightHand" />
+<img src="LeftLeg.png"  id="leftLeg" />
+<img src="RightLeg.png"  id="rightLeg" />
+<img src="LeftFoot.png"  id="leftFoot" />
+<img src="RightFoot.png"  id="rightFoot" />
+<img src="LeftShin.png"  id="leftShin" />
+<img src="RightShin.png"  id="rightShin" />
+<img src="Head.png"  id="head" />
+<img src="ToyStory.png"id="bkgd" />
+<img src="RaceCar.png" id="car" />
+<img src="BackWheel.png"  id="backwheel" />
+<img src="FrontWheel.png"  id="frontwheel" />
+
+
+Add your personal notes or additional information here
+
+<!-- FINISH HTML CODE HERE -->
+</div>
+
+<script>
+
+///////////////////////////////////////////////////////////////////////
+// DECLARE requestAnimFrame
+
+var rAF = window.requestAnimFrame ||
+window.mozRequestAnimFrame ||
+window.webkitRequestAnimFrame ||
+window.msRequestAnimFrame;
+
+var fps = 40;
+
+window.requestAnimFrame = (
+
+function(callback) {
+
+return rAF ||
+
+function(callback) {
+window.setTimeout(callback, 1000 / fps);
+};
+
+})();
+
+///////////////////////////////////////////////////////////////////////
+// DEFINE GLOBAL VARIABLES HERE
+
+
+var canvas;
+var ctx;
+canvas = document.getElementById("fmxCanvas");
+ctx = canvas.getContext("2d");
+
+var canvas1;
+var ctx1;
+canvas1 = document.createElement("canvas");
+ctx1 = canvas1.getContext("2d");
+
+canvas1.width = canvas.width;
+canvas1.height = canvas.height;
+
+var canvas2;
+var ctx2;
+canvas2 = document.createElement("canvas");
+ctx2 = canvas2.getContext("2d");
+
+canvas2.width = canvas.width;
+canvas2.height = canvas.height;
+
+var canvas3;
+var ctx3;
+canvas3 = document.createElement("canvas");
+ctx3 = canvas3.getContext("2d");
+
+canvas3.width = canvas.width;
+canvas3.height = canvas.height;
+    
+var canvas4;
+var ctx4;
+canvas4 = document.createElement("canvas");
+ctx4 = canvas4.getContext("2d");
+
+canvas4.width = canvas.width;
+canvas4.height = canvas.height;
+    
+var canvas5;
+var ctx5;
+canvas5 = document.createElement("canvas");
+ctx5 = canvas5.getContext("2d");
+
+canvas5.width = canvas.width;
+canvas5.height = canvas.height;
+    
+var canvas6;
+var ctx6;
+canvas6 = document.createElement("canvas");
+ctx6 = canvas6.getContext("2d");
+
+canvas6.width = canvas.width;
+canvas6.height = canvas.height;
+    
+var canvas7;
+var ctx7;
+canvas7 = document.createElement("canvas");
+ctx7 = canvas7.getContext("2d");
+
+canvas7.width = canvas.width;
+canvas7.height = canvas.height;
+    
+var canvas8;
+var ctx8;
+canvas8 = document.createElement("canvas");
+ctx8 = canvas8.getContext("2d");
+
+canvas8.width = canvas.width;
+canvas8.height = canvas.height;
+    
+var canvas9;
+var ctx9;
+canvas9 = document.createElement("canvas");
+ctx9 = canvas9.getContext("2d");
+
+canvas9.width = canvas.width;
+canvas9.height = canvas.height;
+    
+var canvas10;
+var ctx10;
+canvas10 = document.createElement("canvas");
+ctx10 = canvas10.getContext("2d");
+
+canvas10.width = canvas.width;
+canvas10.height = canvas.height;
+
+var canvas11;
+var ctx11;
+canvas11 = document.createElement("canvas");
+ctx11 = canvas11.getContext("2d");
+
+canvas11.width = canvas.width;
+canvas11.height = canvas.height;
+
+var display;
+display = document.getElementById('display');
+
+var counter;
+
+///////////////////////////////////////////////////////////////////////
+// DEFINE YOUR GLOBAL VARIABLES HERE
+var torso = new Image();
+    torso = document.getElementById('torso');
+var head = new Image();
+    head = document.getElementById('head');
+var leftHand = new Image();
+    leftHand = document.getElementById('leftHand');
+var rightHand = new Image();
+    rightHand = document.getElementById('rightHand');
+var leftFoot = new Image();
+    leftFoot = document.getElementById('leftFoot');
+var rightFoot = new Image();
+    rightFoot = document.getElementById('rightFoot');
+var leftArm = new Image();
+    leftArm = document.getElementById('leftArm');
+var rightArm = new Image();
+    rightArm = document.getElementById('rightArm');
+var leftLeg = new Image();
+    leftLeg = document.getElementById('leftLeg');
+var rightLeg = new Image();
+    rightLeg = document.getElementById('rightLeg');
+var leftShin = new Image();
+    leftShin = document.getElementById('leftShin');
+var rightShin = new Image();
+    rightShin = document.getElementById('rightShin');
+
+var amount = 1;
+    
+var stars = new Array();
+
+
+
+///////////////////////////////////////////////////////////////////////
+// CALL THE EVENT LISTENERS
+
+window.addEventListener("load", setup, false);
+
+//////////////////////////////////////////////////////////////////////
+// ADD EVENT LISTENERS
+
+canvas.addEventListener("mousemove", mousePos, false);
+
+//////////////////////////////////////////////////////////////////////
+// MOUSE COORDINATES
+
+var stage, mouseX, mouseY;
+
+function mousePos(event) {
+stage = canvas.getBoundingClientRect();
+mouseX = event.clientX - stage.left;
+mouseY = event.clientY - stage.top;
+}
+
+/////////////////////////////////////////////////////////////////////
+// INITIALIZE THE STARTING FUNCTION
+
+function setup() {
+
+/////////////////////////////////////////////////////////////////////
+// DECLARE STARTING VALUES OF GLOBAL VARIABLES
+
+counter = 0;
+mouseX = canvas.width/2;
+mouseY = canvas.height/2;
+
+/////////////////////////////////////////////////////////////////////
+// CALL SUBSEQUENT FUNCTIONS, as many as you need
+createStars();
+
+clear(); // COVER TRANSPARENT CANVAS OR CLEAR CANVAS
+
+draw(); // THIS IS WHERE EVERYTHING HAPPENS
+
+}
+
+////////////////////////////////////////////////////////////////////
+// CLEAR THE CANVAS FOR ANIMATION
+// USE THIS AREA TO MODIFY BKGD
+
+function clear() {
+
+ctx.clearRect(0,0,canvas.width, canvas.height);
+ctx1.clearRect(0,0,canvas.width, canvas.height);
+ctx2.clearRect(0,0,canvas.width, canvas.height);
+ctx3.clearRect(0,0,canvas.width, canvas.height);
+ctx4.clearRect(0,0,canvas.width, canvas.height);
+ctx5.clearRect(0,0,canvas.width, canvas.height);
+ctx6.clearRect(0,0,canvas.width, canvas.height);
+ctx7.clearRect(0,0,canvas.width, canvas.height);
+ctx8.clearRect(0,0,canvas.width, canvas.height);
+ctx9.clearRect(0,0,canvas.width, canvas.height);
+ctx10.clearRect(0,0,canvas.width, canvas.height);
+ctx11.clearRect(0,0,canvas.width, canvas.height);
+
+// clear additional ctxs here if you have more than canvas1
+
+}
+
+//GOT FROM CLASS
+function createStars() {
+    
+for (var i=0; i<amount; i++) {
+    
+    var star = new Object();
+    
+    var x = 2;
+    
+    var y = 830;
+    
+    var rd = 30;
+    
+    var rdH = 30;
+    
+    var rdV = 30;
+    
+    var rsp = 1.4;
+    
+    
+    
+    var rr = Math.round(Math.random()*255);
+    var gg = Math.round(Math.random()*255);
+    var bb = Math.round(Math.random()*255);
+    
+    var col = "rgba("+rr+","+gg+","+bb+",1)";
+    
+    // CREATE  THE OBJECT
+    
+    star.x = x;
+    star.y = y;
+    star.rd = rd;
+    star.rdH = rdH;
+    star.rdV = rdV;
+    star.rsp = rsp;
+    star.col = col;
+    
+    // ADD EACH NEW OBJECT TO THE STARS ARRAY
+    
+    stars[i] = star;
+    
+}
+    
+
+    
+}
+
+
+////////////////////////////////////////////////////////////////////
+// THIS IS WHERE EVERYTHING HAPPENS
+
+function draw() {
+
+counter += 0.1; // EASIER FOR SINE COSINE FUNCTIONS
+
+if (counter > Math.PI*200) { counter = 0; } // RESET COUNTER
+
+clear(); // USE THIS TO REFRESH THE FRAME AND CLEAR CANVAS
+
+////////////////////////////////////////////////////////////////////
+// >>>START HERE>>>START HERE>>>START HERE>>>START HERE>>>START HERE
+ctx.fillStyle = "white";
+    
+ctx.drawImage(bkgd, 0, 0, 1000, 1000);
+    
+// SIN COS
+
+var sin, cos;
+    
+sin = Math.sin(counter);
+    
+cos = Math.cos(counter);
+
+
+//TORSO
+ctx8.beginPath();
+    ctx8.drawImage(torso,290,260);
+ctx8.closePath();
+ 
+//HEAD
+ctx8.save();
+    ctx8.translate(433, 298);
+    ctx8.rotate(6.3 + sin/10);
+    ctx8.drawImage(head,-82,-190);
+ctx8.restore();
+
+//LEFT ARM
+ctx7.save();
+    ctx7.translate(513,339);
+    ctx7.drawImage(leftArm,-32,-84)
+ctx7.restore();
+
+//LEFT HAND
+ctx7.save();
+    ctx7.translate(623,322);
+    ctx7.rotate(0 + sin/3.4);
+    ctx7.drawImage(leftHand,-9,-69)
+ctx7.restore();
+
+ctx8.save();
+    ctx8.translate(514,376);
+    ctx8.rotate(0 + sin/8);
+    ctx8.drawImage(canvas7,-513,-339)
+ctx8.restore();
+
+
+//RIGHT ARM
+ctx1.save();
+    ctx1.translate(250, 600);
+    ctx1.drawImage(rightArm,-158,-43);
+ctx1.restore();
+
+
+//RIGHT HAND
+ctx1.save();
+    ctx1.translate(124, 621);
+    ctx1.rotate(0 + cos/5)
+    ctx1.drawImage(rightHand,-96,-66);
+ctx1.restore();
+
+
+ctx8.save();
+    ctx8.translate(369,336)
+    ctx8.rotate(0 + sin/6);
+    ctx8.drawImage(canvas1,-249,-603)
+ctx8.restore();
+ 
+ //LEFT SHIN
+ctx2.save();
+    ctx2.translate(467, 637);
+    ctx2.drawImage(leftShin,-46,-9);
+ctx2.restore();
+
+//LEFT FOOT
+ctx2.save();
+    ctx2.translate(469, 711);
+    ctx2.rotate(0 + sin/5);
+    ctx2.drawImage(leftFoot,-47,-7);
+ctx2.restore();
+
+ctx3.save();
+    ctx3.translate(466,635)
+    ctx3.rotate(0 + cos/7);
+    ctx3.drawImage(canvas2,-467,-637)
+ctx3.restore();
+
+
+//LEFT LEG
+ctx4.save();
+    ctx4.translate(470, 570);
+    //ctx.rotate(0 + sin/6);
+    ctx4.drawImage(leftLeg,-46,-9);
+ctx4.restore();
+
+ctx4.save();
+    ctx4.translate(467,634);
+    ctx4.drawImage(canvas3,-466,-635);
+ctx4.restore()
+
+ctx8.save();
+    ctx8.translate(470,556)
+    ctx8.rotate(5.8 + cos/3.4);
+    ctx8.drawImage(canvas4,-467,-585)
+ctx8.restore();
+ 
+ 
+ //RIGHT SHIN
+ctx5.save();
+    ctx5.translate(218, 483);
+    ctx5.drawImage(rightShin,-44,-7);
+ctx5.restore();
+
+//RIGHT FOOT
+ctx5.save();
+    ctx5.translate(215, 573);
+    ctx5.rotate(0 + cos/4);
+    ctx5.drawImage(rightFoot,-80,-10);
+ctx5.restore();
+
+ctx6.save();
+    ctx6.translate(190,500)
+    ctx6.drawImage(rightLeg,0,0)
+ctx6.restore();
+
+
+ctx6.save();
+    ctx6.translate(235,590)
+    ctx6.rotate(0 + sin/5);
+    ctx6.drawImage(canvas5,-215,-490)
+ctx6.restore();
+
+
+//RIGHT WHOLE LEG
+ctx8.save();
+    ctx8.translate(395,539)
+    ctx8.rotate(-(5.8 + cos/3.4));
+    ctx8.drawImage(canvas6,-235,-510)
+ctx8.restore();
+
+
+
+
+//WHOLE BODY
+ctx9.save()
+ctx9.translate(450,570+sin*35*2/0.7)
+ctx9.drawImage(canvas8,-425,-530)
+ctx9.restore()
+
+
+
+ctx.drawImage(canvas9,0,0)
+
+
+//WHEELS
+ctx10.drawImage(car,0,0)
+ctx10.save();
+ctx10.translate(59,154)
+ctx10.rotate(counter*2)
+ctx10.drawImage(backwheel,-29,-30)
+ctx10.restore();
+
+ctx11.drawImage(canvas10,0,0)
+ctx11.save();
+    ctx11.translate(170,158)
+    ctx11.rotate(counter*2)
+    ctx11.drawImage(frontwheel,-23,-28)
+ctx11.restore();
+
+
+for (var i=0; i<amount; i++) {
+    
+
+// HORIZONTAL SLIDE
+    
+    if (stars[i].x > canvas.width + stars[i].rdH*2) {
+        
+        stars[i].x = -stars[i].rdH*2;
+        
+    }
+    stars[i].x += stars[i].rsp*10;
+    
+    
+/// DRAW THE RECTS
+    ctx.save();
+    ctx.translate(stars[i].x, stars[i].y);
+    ctx.beginPath();
+    ctx.drawImage(canvas11,0,-110)
+    ctx.closePath();
+    ctx.fillStyle = stars[i].col;
+    ctx.fill();
+    ctx.lineWidth = 0.5;
+    ctx.stroke();
+    ctx.restore();
+    
+}
+
+
+
+
+ 
+
+ 
+
+ 
+
+// <<<END HERE<<<END HERE<<<END HERE<<<END HERE<<<END HERE<<<END HERE
+///////////////////////////////////////////////////////////////////
+
+// CREDITS
+
+ctx.save();
+var credits = "Bryton Montgomery, Eternal Motion, FMX 310, SP 2025";
+ctx.font = 'bold 12px Helvetica';
+ctx.fillStyle = "rgba(0,0,0,1)"; // change the color here
+ctx.shadowColor = "rgba(255,255,255,1)"; // change shadow color here
+ctx.shadowBlur = 12;
+ctx.shadowOffsetX = 2;
+ctx.shadowOffsetY = 2;
+ctx.fillText(credits, 10, canvas.height - 10); // CHANGE THE LOCATION HERE
+ctx.restore();
+
+//////////////////////////////////////////////////////////////////
+// HTML DISPLAY FIELD FOR TESTING PURPOSES
+
+display.innerHTML = Math.round(mouseX) + " || " + Math.round(mouseY) + " || counter = " + Math.round(counter);
+
+/////////////////////////////////////////////////////////////////
+// LAST LINE CREATES THE ANIMATION
+
+requestAnimFrame(draw); // CALLS draw() every nth of a second
+
+}
+
+</script>
+
+</body>
+</html>
