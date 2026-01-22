@@ -1,0 +1,458 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="UTF-8">
+
+<title> Kinetic Typography Montgomery </title>
+
+<!-- import external .js scripts here -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Delius&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Schoolbell&display=swap" rel="stylesheet">
+
+
+<!-- <script type="text/javascript" src="#" ></script> -->
+
+<!-- modify CSS properties here -->
+
+<style type="text/css">
+body,td,th {
+font-family: Monaco, "Courier New", "monospace";
+font-size: 14px;
+color: rgba(255,255,255,1);
+}
+
+body {
+background-color: rgba(0,0,0,1);
+}
+
+#container {
+position: relative;
+text-align: left;
+width: 95%;
+height: 800px;
+}
+
+#fmxCanvas {
+position: relative;
+background-color:rgba(255,255,255,1);
+border: rgba(255,255,255,1) thin dashed;
+margin: 10px;
+cursor: crosshair;
+display: inline-block;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div id="container">
+<!-- START HTML CODE HERE -->
+
+<canvas id="fmxCanvas" width="800" height="800"></canvas>
+
+<div id="display"></div>
+
+<br><br>
+<audio controls autoplay>
+  <source src="24.mp3" type="audio/mpeg">
+</audio>
+
+Add your personal notes or additional information here
+
+<!-- FINISH HTML CODE HERE -->
+</div>
+
+<script>
+
+///////////////////////////////////////////////////////////////////////
+// DECLARE requestAnimFrame
+
+var rAF = window.requestAnimFrame ||
+window.mozRequestAnimFrame ||
+window.webkitRequestAnimFrame ||
+window.msRequestAnimFrame;
+
+var fps = 30;
+
+window.requestAnimFrame = (
+
+function(callback) {
+
+return rAF ||
+
+function(callback) {
+window.setTimeout(callback, 1000 / fps);
+};
+
+})();
+
+///////////////////////////////////////////////////////////////////////
+// DEFINE GLOBAL VARIABLES HERE
+
+var canvas;
+var ctx;
+canvas = document.getElementById("fmxCanvas");
+ctx = canvas.getContext("2d");
+
+var canvas1;
+var ctx1;
+canvas1 = document.createElement("canvas");
+ctx1 = canvas1.getContext("2d");
+
+canvas1.width = canvas.width;
+canvas1.height = canvas.height;
+
+var canvas2;
+var ctx2;
+canvas2 = document.createElement("canvas");
+ctx2 = canvas2.getContext("2d");
+
+canvas2.width = canvas.width;
+canvas2.height = canvas.height;
+
+
+var canvas3;
+var ctx3;
+canvas3 = document.createElement("canvas");
+ctx3 = canvas3.getContext("2d");
+
+canvas3.width = canvas.width;
+canvas3.height = canvas.height;
+
+
+var canvas4;
+var ctx4;
+canvas4 = document.createElement("canvas");
+ctx4 = canvas4.getContext("2d");
+
+canvas4.width = canvas.width;
+canvas4.height = canvas.height;
+
+
+var canvas5;
+var ctx5;
+canvas5 = document.createElement("canvas");
+ctx5 = canvas5.getContext("2d");
+
+canvas5.width = canvas.width;
+canvas5.height = canvas.height;
+
+
+
+var canvas6;
+var ctx6;
+canvas6 = document.createElement("canvas");
+ctx6 = canvas6.getContext("2d");
+
+canvas6.width = canvas.width;
+canvas6.height = canvas.height;
+
+
+
+
+var display;
+display = document.getElementById('display');
+
+var counter;
+
+///////////////////////////////////////////////////////////////////////
+// DEFINE YOUR GLOBAL VARIABLES HERE
+
+
+///////////////////////////////////////////////////////////////////////
+// CALL THE EVENT LISTENERS
+
+window.addEventListener("load", setup, false);
+
+//////////////////////////////////////////////////////////////////////
+// ADD EVENT LISTENERS
+
+canvas.addEventListener("mousemove", mousePos, false);
+
+//////////////////////////////////////////////////////////////////////
+// MOUSE COORDINATES
+
+var stage, mouseX, mouseY;
+
+function mousePos(event) {
+stage = canvas.getBoundingClientRect();
+mouseX = event.clientX - stage.left;
+mouseY = event.clientY - stage.top;
+}
+
+/////////////////////////////////////////////////////////////////////
+// INITIALIZE THE STARTING FUNCTION
+
+function setup() {
+
+/////////////////////////////////////////////////////////////////////
+// DECLARE STARTING VALUES OF GLOBAL VARIABLES
+
+counter = 0;
+mouseX = canvas.width/2;
+mouseY = canvas.height/2;
+
+/////////////////////////////////////////////////////////////////////
+// CALL SUBSEQUENT FUNCTIONS, as many as you need
+
+clear(); // COVER TRANSPARENT CANVAS OR CLEAR CANVAS
+
+draw(); // THIS IS WHERE EVERYTHING HAPPENS
+
+}
+
+////////////////////////////////////////////////////////////////////
+// CLEAR THE CANVAS FOR ANIMATION
+// USE THIS AREA TO MODIFY BKGD
+
+function clear() {
+
+ctx.clearRect(0,0,canvas.width, canvas.height);
+//ctx1.clearRect(0,0,canvas.width, canvas.height);
+ctx2.clearRect(0,0,canvas.width, canvas.height);
+ctx3.clearRect(0,0,canvas.width, canvas.height);
+ctx4.clearRect(0,0,canvas.width, canvas.height);
+ctx5.clearRect(0,0,canvas.width, canvas.height);
+ctx6.clearRect(0,0,canvas.width, canvas.height);
+
+// clear additional ctxs here if you have more than canvas1
+
+}
+
+////////////////////////////////////////////////////////////////////
+// THIS IS WHERE EVERYTHING HAPPENS
+
+function draw() {
+
+counter += 0.1; // EASIER FOR SINE COSINE FUNCTIONS
+
+if (counter > Math.PI*200) { counter = 0; } // RESET COUNTER
+
+clear(); // USE THIS TO REFRESH THE FRAME AND CLEAR CANVAS
+
+////////////////////////////////////////////////////////////////////
+// >>>START HERE>>>START HERE>>>START HERE>>>START HERE>>>START HERE
+
+//BACKGROUND
+ctx.beginPath();
+    ctx.rect(0,0,800,800);
+ctx.closePath();
+ctx.fillStyle = "rgba(210,180,140,1.00)"
+ctx.fill();
+
+var sin = Math.sin(counter/2);
+var cos = Math.cos(counter/3);
+
+var txt1 = "Yeah, know you're alive and God's not finished."
+var txt2 = "The devil's a lie, but now he finished"
+var txt3 = "We gonna be okay"
+var txt4 = "Throw our hands up in the sky, Yes, Lord, we wave 'em high"
+var txt5 = 'God, please set it alright Make it right, now that feels right Nothing else ever feels right Nothing else ever feels right'
+var txtsz = mouseY;
+
+
+
+ctx1.font = ' bold 17px "Alfa Slab One" ';
+//ctx1.fillText(txt1, 22, 45);
+ 
+//CROSS
+ctx1.save();
+ ctx1.beginPath();
+    ctx1.moveTo(335,762);
+    ctx1.lineTo(465,762);
+    ctx1.lineTo(465,341);
+    ctx1.lineTo(625,341);
+    ctx1.lineTo(625,210);
+    ctx1.lineTo(465,210);
+    ctx1.lineTo(465,38);
+    ctx1.lineTo(335,38);
+    ctx1.lineTo(335,210);
+    ctx1.lineTo(175,210);
+    ctx1.lineTo(175,341);
+    ctx1.lineTo(335,341);
+ ctx1.closePath();
+ ctx1.clip();
+
+ 
+ 
+ ctx1.fillText(txt1, 185, canvas.height/2 + sin*350);
+ ctx1.restore();
+ 
+ 
+ ctx2.font = 'normal 20px Schoolbell ';
+ ctx2.fillText(txt2, mouseX, 773);
+ ctx2.fillStyle = "rgba(255,0,0,"+cos+")"
+ 
+//WE GONNA BE OKAY TEXT
+ctx3.save();
+ctx3.translate(138, 104);
+ctx3.rotate(25 * Math.PI / 180);
+ctx3.font = 'normal 10px Delius';
+ctx3.fillStyle = "rgba(0,0,0,1)";
+ctx3.fillText(txt3, 0, 0);            
+ctx3.restore();
+
+ctx3.save();
+ctx3.translate(707, 245);
+ctx3.rotate(312 * Math.PI / 180);
+ctx3.font = 'normal 10px Delius';
+ctx3.fillStyle = "rgba(0,0,0,1)";
+ctx3.fillText(txt3, 0, 0);            
+ctx3.restore();
+
+ctx3.save();
+ctx3.translate(766, 698);
+ctx3.rotate(-75 * Math.PI / 180);
+ctx3.font = 'normal 10px Delius';
+ctx3.fillStyle = "rgba(0,0,0,1)";
+ctx3.fillText(txt3, 0, 0);            
+ctx3.restore();
+
+ctx3.save();
+ctx3.translate(519, 357);
+ctx3.rotate(103 * Math.PI / 180);
+ctx3.font = 'normal 10px Delius';
+ctx3.fillStyle = "rgba(0,0,0,1)";
+ctx3.fillText(txt3, 0, 0);            
+ctx3.restore();
+
+ctx3.save();
+ctx3.translate(109, 193);
+ctx3.rotate(-135 * Math.PI / 180);
+ctx3.font = 'italic 15px "Permanent Marker"';
+ctx3.fillStyle = "rgba(0,0,0,1)";
+ctx3.fillText(txt3, 0, 0);            
+ctx3.restore();
+
+ctx3.save();
+ctx3.translate(201, 650);
+ctx3.rotate(33 * Math.PI / 180);
+ctx3.font = 'italic 10px Delius';
+ctx3.fillStyle = "rgba(0,0,0,1)";
+ctx3.fillText(txt3, 0, 0);            
+ctx3.restore();
+
+ctx3.save();
+ctx3.translate(48, 520);
+ctx3.rotate(-65 * Math.PI / 180);
+ctx3.font = 'italic 30px Delius';
+ctx3.fillStyle = "rgba(0,0,0,1)";
+ctx3.fillText(txt3, 0, 0);            
+ctx3.restore();
+
+
+ctx4.save();
+ctx4.translate(52, 602);
+ctx4.rotate(-33 * Math.PI / 180);
+ctx4.font = 'normal 25px "Permanent Marker"';
+ctx4.fillStyle = "rgba(0,0,0,1)";
+ctx4.fillText(txt3, 0, 0);            
+ctx4.restore();
+
+ctx4.save();
+ctx4.translate(544, 47);
+ctx4.rotate(8 * Math.PI / 180);
+ctx4.font = 'normal 20px "Permanent Marker"';
+ctx4.fillStyle = "rgba(0,0,0,1)";
+ctx4.fillText(txt3, 0, 0);            
+ctx4.restore();
+
+ctx4.save();
+ctx4.translate(592, 502);
+ctx4.rotate(18 * Math.PI / 180);
+ctx4.font = 'normal 15px "Permanent Marker"';
+ctx4.fillStyle = "rgba(0,0,0,1)";
+ctx4.fillText(txt3, 0, 0);            
+ctx4.restore();
+
+ctx4.save();
+ctx4.translate(735, 403);
+ctx4.rotate(-112 * Math.PI / 180);
+ctx4.font = 'italic 15px "Permanent Marker"';
+ctx4.fillStyle = "rgba(0,0,0,1)";
+ctx4.fillText(txt3, 0, 0);            
+ctx4.restore();
+
+//TOP WHITE TEXT
+ctx4.save();
+ctx4.translate(200+cos*100, 18);
+ctx4.font = 'italic 15px Schoolbell';
+ctx4.fillStyle = "rgba(255,255,255,1)";
+ctx4.fillText(txt4, 0, 0);            
+ctx4.restore();
+
+
+
+//SPINNING SPIRAL
+var amount1 = txt5.length;
+for (var i=0; i<amount1; i++) {
+    var limitedY = (mouseY / canvas.height);
+    ctx5.save();
+    ctx5.translate(402, 74);
+    ctx5.rotate((i+10)*Math.PI/20 + counter*(i+1)/1000);
+    ctx5.font = 'normal 20px VT323';
+    ctx5.fillStyle = "rgba(255,215,0,"+limitedY+")";
+    ctx5.fillText(txt5[i], i/2, i/2);            
+    ctx5.restore();
+
+}
+ 
+//DRAWS CROSS
+ctx.save();
+ctx.translate(canvas.width/2, canvas.height/2);
+ctx.drawImage(canvas1, -canvas.width/2, -canvas.height/2);
+ctx.drawImage(canvas2, -canvas.width/2, -canvas.height/2);
+ctx.drawImage(canvas3, -canvas.width/2, -canvas.height/2);
+ctx.drawImage(canvas4, -canvas.width/2, -canvas.height/2);
+ctx.drawImage(canvas5, -canvas.width/2, -canvas.height/2);
+ctx.restore(); 
+
+
+
+ 
+
+ 
+
+ 
+
+ 
+
+// <<<END HERE<<<END HERE<<<END HERE<<<END HERE<<<END HERE<<<END HERE
+///////////////////////////////////////////////////////////////////
+
+// CREDITS
+
+ctx.save();
+var credits = "Bryton Montgomery, Kinetic Typography, FMX 310, SP 2025";
+ctx.font = 'bold 12px Helvetica';
+ctx.fillStyle = "rgba(0,0,0,1)"; // change the color here
+ctx.shadowColor = "rgba(255,255,255,1)"; // change shadow color here
+ctx.shadowBlur = 12;
+ctx.shadowOffsetX = 2;
+ctx.shadowOffsetY = 2;
+ctx.fillText(credits, 10, canvas.height - 10); // CHANGE THE LOCATION HERE
+ctx.restore();
+
+//////////////////////////////////////////////////////////////////
+// HTML DISPLAY FIELD FOR TESTING PURPOSES
+
+display.innerHTML = Math.round(mouseX) + " || " + Math.round(mouseY) + " || counter = " + Math.round(counter);
+
+/////////////////////////////////////////////////////////////////
+// LAST LINE CREATES THE ANIMATION
+
+requestAnimFrame(draw); // CALLS draw() every nth of a second
+
+}
+
+</script>
+
+</body>
+</html>
