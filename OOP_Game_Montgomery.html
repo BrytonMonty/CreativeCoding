@@ -1,0 +1,708 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="UTF-8">
+
+<title> VINYL RUSH </title>
+
+<!-- import external .js scripts here -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+
+
+<!-- <script type="text/javascript" src="#" ></script> -->
+
+<!-- modify CSS properties here -->
+
+<style type="text/css">
+body,td,th {
+font-family: Monaco, "Courier New", "monospace";
+font-size: 14px;
+color: rgba(255,255,255,1);
+}
+
+body {
+background-color: rgba(0,0,0,1);
+}
+
+#container {
+position: relative;
+text-align: left;
+width: 95%;
+height: 800px;
+}
+
+#fmxCanvas {
+position: relative;
+background-color:rgba(255,255,255,1);
+border: rgba(255,255,255,1) thin dashed;
+margin: 10px;
+cursor: none;
+display: inline-block;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div id="container">
+<!-- START HTML CODE HERE -->
+
+<canvas id="fmxCanvas" width="800" height="600"></canvas>
+
+<div id="display"></div>
+
+<br><br>
+
+<audio width="300" loop controls id="audio1">
+
+	<source src="audio/reaper.mp3" type="audio/mpeg" />
+	
+    
+</audio>
+    
+<audio width="300" controls id="bell">
+
+	<source src="audio/bell.mp3" type="audio/mpeg" />
+    
+</audio>
+    
+<audio width="300" controls id="buzz">
+
+	<source src="audio/buzz.mp3" type="audio/mpeg" />
+    
+</audio>
+
+<br><br>
+
+<img src="assets/mic.png" width="100" height="100" alt="" id="mic" />
+
+<img src="assets/broken.png" width="100" height="100" alt="" id="broken" />
+<img src="assets/record.png" width="100" height="100" alt="" id="record" />
+<img src="assets/record1.png" width="100" height="100" alt="" id="record1" />
+<img src="assets/record2.png" width="100" height="100" alt="" id="record2" />
+<img src="assets/record3.png" width="100" height="100" alt="" id="record3" />
+<img src="assets/record4.png" width="100" height="100" alt="" id="record4" />
+
+
+<img src="assets/bkgd1.png" width="800" height="600" alt="" id="bkgd1" />
+<img src="assets/bkgd2.png" width="800" height="600" alt="" id="bkgd2" />
+<img src="assets/bkgd3.png" width="800" height="600" alt="" id="bkgd3" />
+<img src="assets/bkgd4.png" width="800" height="600" alt="" id="bkgd4" />
+
+<img src="assets/bkgdstart.png" width="800" height="600" alt="" id="bkgdstart" />
+<img src="assets/bkgdend.png" width="800" height="600" alt="" id="bkgdend" />
+
+<!-- FINISH HTML CODE HERE -->
+</div>
+
+<script>
+
+///////////////////////////////////////////////////////////////////////
+// DECLARE requestAnimFrame
+
+var rAF = window.requestAnimFrame ||
+window.mozRequestAnimFrame ||
+window.webkitRequestAnimFrame ||
+window.msRequestAnimFrame;
+
+var fps = 30;
+
+window.requestAnimFrame = (
+
+function(callback) {
+
+return rAF ||
+
+function(callback) {
+window.setTimeout(callback, 1000 / fps);
+};
+
+})();
+
+///////////////////////////////////////////////////////////////////////
+// DEFINE GLOBAL VARIABLES HERE
+
+var canvas;
+var ctx;
+canvas = document.getElementById("fmxCanvas");
+ctx = canvas.getContext("2d");
+
+var canvas1;
+var ctx1;
+canvas1 = document.createElement("canvas");
+ctx1 = canvas1.getContext("2d");
+
+canvas1.width = canvas.width;
+canvas1.height = canvas.height;
+
+var canvas2;
+var ctx2;
+canvas2 = document.createElement("canvas");
+ctx2 = canvas2.getContext("2d");
+
+canvas2.width = canvas.width;
+canvas2.height = canvas.height;
+
+var display;
+display = document.getElementById('display');
+
+var counter;
+
+///////////////////////////////////////////////////////////////////////
+// DEFINE YOUR GLOBAL VARIABLES HERE
+let maxTime = 60; // total time in seconds
+let timer = maxTime; // current countdown
+
+	  
+	  var bkgd1 = new Image();
+	  bkgd1 = document.getElementById('bkgd1');
+	  
+	  var bkgd2 = new Image();
+	  bkgd2 = document.getElementById('bkgd2');
+	  
+	  var bkgd3 = new Image();
+	  bkgd3 = document.getElementById('bkgd3');
+	  
+	  var bkgd4 = new Image();
+	  bkgd4 = document.getElementById('bkgd4');
+	  
+	  var backgrounds = new Array();
+	  backgrounds = [bkgd1, bkgd2, bkgd3, bkgd4];
+	  
+	  /////////////////
+	  
+	  var mic = new Image();
+	  mic = document.getElementById('mic');
+	  
+	 
+	  
+	  
+	  var mics = new Array();
+	  mics = [ mic];
+	  // butterflies = [ butterfly, butterfly5 ];
+	  
+	  /////////////////
+	
+	  var img0 = new Image();
+	  img0 = document.getElementById('broken');
+      
+      var img1 = new Image();
+	  img1 = document.getElementById('record');
+    
+	  var img2 = new Image();
+	  img2 = document.getElementById('record1');
+	  
+	  var img3 = new Image();
+	  img3 = document.getElementById('record2');
+	  
+	  var img4 = new Image();
+	  img4 = document.getElementById('record3');
+	  
+	  var img5 = new Image();
+	  img5 = document.getElementById('record4');
+	  
+	  
+	  
+	  var records = new Array();
+	  records = [ img0, img1, img2, img3, img4,img5 ];
+	  
+
+/// THIS IS THE CONTAINER FOR ALL MY THINGS
+
+	  var things = new Array();
+	  
+	  var amount;  // how many things do you want to create
+	  
+	  var globalScore;
+	  
+	  var level;
+	  
+	  var youLose;
+	  
+	  var startGame;
+      
+      let badCollectCount = 0;
+
+
+///////////////////////////////////////////////////////////////////////
+// CALL THE EVENT LISTENERS
+
+window.addEventListener("load", setup, false);
+
+// >>>>>>>>>>>>>> NEW
+
+window.addEventListener("click", startGameF, false);
+
+//////////////////////////////////////////////////////////////////////
+// ADD EVENT LISTENERS
+
+canvas.addEventListener("mousemove", mousePos, false);
+
+
+
+//////////////////////////////////////////////////////////////////////
+// MOUSE COORDINATES
+
+var stage, mouseX, mouseY;
+
+function mousePos(event) {
+stage = canvas.getBoundingClientRect();
+mouseX = event.clientX - stage.left;
+mouseY = event.clientY - stage.top;
+}
+
+////////// ADDITIONAL FUNCTIONS >>>>> NEW
+
+///// START GAME
+
+function startGameF() {
+	
+	startGame = 1; // FLAG 
+    
+    document.getElementById('audio1').play();
+	
+	if ( youLose == 1) {
+		
+		resetGame();
+		
+	}
+	
+}
+
+function resetGame() {
+	
+		things = new Array();
+	
+		amount  = 0;  
+	  
+	  	globalScore = 0;
+	  
+	  	level = 0;
+	  
+	  	timer = 100;
+	  
+	  	youLose = 0;
+	  
+	  	startGame = 0;
+        
+        counter = 0;
+        
+        badCollectCount = 0;
+	
+}
+
+
+function drawBkgd() {
+	
+	// ctx.drawImage(bkgd, 0,0,canvas.width, canvas.height);
+	// % modulus 
+	// calcualtes step by step from 0 to backgrounds.length
+    var l = level % backgrounds.length ;
+	
+	ctx.drawImage(backgrounds[l], 0,0,canvas.width, canvas.height);
+	
+}
+
+
+function drawMic() {
+	
+	// var fly = Math.floor( Math.random() * butterflies.length);
+	
+	var fly = level % mics.length;
+	
+	ctx.drawImage(mics[fly], mouseX - 10, mouseY - 35);
+	
+}
+
+/// THIS IS CALLED THE OBJECT CONSTRUCTOR
+
+function createThings() {
+	
+	for ( var i=0; i<amount; i++) {
+    
+    var thing = new Object();
+		// floor removes the decimal 
+        // n is the index of the list of flowers
+		var n = Math.floor(Math.random() * records.length); // RANDOM FLOWER INDEX
+		
+		var x = Math.random() * canvas.width;
+		
+		var y = Math.random() * canvas.height;
+		
+		var w = 50; // bounding box
+		
+		var h = w; // bounding box 
+		
+		var rt = Math.PI * 2; // ( 2*Math.random() );
+		// the range is -3 < R < +3
+        
+        // var spx = N - Math.random() * 2N;
+        
+        var baseSpeed = 1 + level * 0.5; // or adjust multiplier for more/less speed
+        var angle = Math.random() * Math.PI * 2;
+        var spx = Math.cos(angle) * baseSpeed;
+        var spy = Math.sin(angle) * baseSpeed;
+        
+        
+        // energy or points 
+        var e; // ENERGY VAR\
+        
+if (n == 0) { // indexes of the bad cd}       
+        e = 0; } 
+        
+else { 
+        e = 1;
+}
+		
+        thing.n = n; // index 
+        thing.x = x;
+        thing.y = y;
+        thing.w = w;
+        thing.h = h;
+        thing.rt = rt;
+        thing.spx = spx;
+        thing.spy = spy;
+        thing.e = e;
+        
+		// STORE EACH NEW OBJECT IN THE THINGS ARRAY
+		
+		things[i] = thing;
+
+	}
+	
+}
+
+
+///////////////////////////////
+
+function drawThings() {
+
+    for (var j = 0; j < things.length; j++) {
+    
+        // BROKEN CD TO FALL TOP TO BOTMM
+        if (things[j].n === 0 || things[j].n === 10) {
+            things[j].spx = 0;
+            things[j].spy = 5+counter/5;
+
+            things[j].y += things[j].spy;
+
+            if (things[j].y > canvas.height) {
+                things[j].y = 0; 
+            }
+
+        } else {
+            //EVERYTHING ELSE
+            things[j].x += things[j].spx;
+            things[j].y += things[j].spy;
+
+            if (things[j].x > canvas.width || things[j].x < 0) {
+                things[j].spx *= -1;
+            }
+
+            if (things[j].y > canvas.height || things[j].y < 0) {
+                things[j].spy *= -1;
+            }
+        }
+    
+
+ctx.save();
+
+ctx.translate(things[j].x, things[j].y);
+
+ctx.rotate(things[j].rt + counter );
+
+ctx.drawImage(  records[things[j].n], 
+                -things[j].w/2, 
+                -things[j].h/2, 
+                things[j].w, 
+                things[j].h );
+
+ctx.restore();
+
+}
+
+
+	
+}
+
+
+//////////////////////////////
+
+function checkThings() {
+	
+// TIMER GOES DOWN
+
+timer -= 0.1;
+
+
+if (timer < 0) { 
+
+	youLose = 1; // flag
+
+}
+
+// OBJECTS
+	
+	for (var k=0; k<things.length; k++) {
+		
+/// CALCULATE THE DISTANCE BETWEEN THE MOUSE AND EACH thing
+
+		var A = mouseX - things[k].x;
+		var B = mouseY - things[k].y;
+		
+		//var D = Math.sqrt( Math.pow(A,2) + Math.pow(B,2) );
+        
+        var D = Math.sqrt( A*A + B*B );
+		
+		//  average between the width and height
+		
+		var WH = ( things[k].w + things[k].h ) / 2; 
+		
+		if ( D < WH ) { 
+            
+        // globalScore ++;
+        globalScore += things[k].e; // increase by energy
+            
+        if ( globalScore < 0) {
+
+            youLose = 1; // flag
+
+        }
+
+        if (things[k].n == 0) {
+            document.getElementById('buzz').play(); 
+            badCollectCount++;
+                if (badCollectCount >= 3) {
+                    youLose = 1;
+                }
+        } else {
+            document.getElementById('bell').play();
+        }
+
+        // REMOVE THE THING AT THE VERY END!!!!!! NOT BEFORE
+        // splice removes 1 object at index k from the Array things
+
+                things.splice(k,1);
+
+                }
+
+            }
+                
+                
+                //IF all records collect, go on to next level
+                let goodThingsLeft = things.some(t => t.n !== 0 && t.n !== 10);
+
+                if (!goodThingsLeft) {
+                    amount += 5;
+                    level++;
+                    timer = 100;
+                    createThings();
+                }
+
+
+
+        }
+
+
+/////////////////////////////
+
+function drawStartScreen() {
+	
+	  ctx.drawImage(bkgdstart, 0,0,canvas.width, canvas.height);
+      
+      ctx.fillStyle = "rgba(255,255,255,0.4)";
+      ctx.fillRect(186, 365, 400,70);
+      var text1 = "Collect all the records";
+      ctx.font = 'bold 15px "Press Start 2P", monospace'
+      ctx.fillStyle = "rgba(91,49,93,1.00)"; // change the color here
+      ctx.fillText(text1, 214, 393);
+      
+      
+      var text2 = "Watch out for the broken CDs!";
+      ctx.font = 'bold 13px "Press Start 2P", monospace'
+      ctx.fillStyle = "rgba(91,49,93,1.00)"; // change the color here
+      ctx.fillText(text2, 204, 419);
+      
+      var text = "CLICK ANYWHERE TO START";
+      ctx.font = 'bold 30px "Press Start 2P", monospace'
+      ctx.fillStyle = "rgba(91,49,93,1.00)"; // change the color here
+      ctx.fillText(text, 50, 541); // CHANGE THE LOCATION HERE
+	
+}
+
+/////////////////////////////
+
+function drawLoserScreen() {
+	
+    ctx.drawImage(bkgdend, 0, 0, canvas.width, canvas.height);
+
+
+    // RESTART PROMPT
+    var text2 = "⚡ CLICK TO SHRED AGAIN ⚡";
+    ctx.font = 'bold 32px "Press Start 2P", monospace';
+    ctx.fillStyle = "rgba(91,49,93,1.00)"
+    ctx.fillText(text2, 20,550);
+
+	
+}
+
+
+/////////////////////////////////////////////////////////////////////
+// INITIALIZE THE STARTING FUNCTION
+
+function setup() {
+
+/////////////////////////////////////////////////////////////////////
+// DECLARE STARTING VALUES OF GLOBAL VARIABLES
+
+counter = 0;
+mouseX = canvas.width/2;
+mouseY = canvas.height/2;
+
+//////////// >>> NEW 
+
+resetGame();
+
+/////////////////////////////////////////////////////////////////////
+// CALL SUBSEQUENT FUNCTIONS, as many as you need
+
+/////////// >>> NEW 
+
+createThings();
+
+clear(); // COVER TRANSPARENT CANVAS OR CLEAR CANVAS
+
+draw(); // THIS IS WHERE EVERYTHING HAPPENS
+
+}
+
+////////////////////////////////////////////////////////////////////
+// CLEAR THE CANVAS FOR ANIMATION
+// USE THIS AREA TO MODIFY BKGD
+
+function clear() {
+
+ctx.clearRect(0,0,canvas.width, canvas.height);
+ctx1.clearRect(0,0,canvas.width, canvas.height);
+ctx2.clearRect(0,0,canvas.width, canvas.height);
+
+// clear additional ctxs here if you have more than canvas1
+
+}
+
+////////////////////////////////////////////////////////////////////
+// THIS IS WHERE EVERYTHING HAPPENS
+
+function draw() {
+
+counter += 0.1; // EASIER FOR SINE COSINE FUNCTIONS
+
+if (counter > Math.PI*200) { counter = 0; } // RESET COUNTER
+
+clear(); // USE THIS TO REFRESH THE FRAME AND CLEAR CANVAS
+
+////////////////////////////////////////////////////////////////////
+// >>>START HERE>>>START HERE>>>START HERE>>>START HERE>>>START HERE
+
+ 
+if (startGame == 0 && youLose == 0) {
+	
+				drawStartScreen();
+				
+} 
+
+if (startGame == 1 && youLose == 0) {
+	
+				drawBkgd(); // LAYER 0
+								
+				drawThings(); // LAYER 1
+						
+				checkThings();
+				
+				drawMic(); // LAYER 2
+                
+                //Timer for Bar
+                if (timer > 0) {
+                timer -= 1 / 60; 
+                if (timer <= 0) {
+                    timer = 0;
+                    youLose = 1; 
+                }
+            }
+
+            } 
+
+if (startGame == 1 && youLose == 1) {
+	
+				drawLoserScreen();
+				
+}
+
+
+///// SCORE BOARD
+
+    ctx.save();
+    ctx.fillStyle = "rgba(255,255,255,0.5)";
+    ctx.fillRect(125, 0, 575, 27);
+    var text = " 🎸 LEVEL:" + level + " | 🏆 SCORE:" + globalScore + " | 🎶 RECORDS:" + things.length;
+    ctx.font = 'bold 14px "Press Start 2P", monospace';  
+    ctx.fillStyle = "rgba(243,0,255,1.00)";  
+    ctx.shadowOffsetX = 2;
+    ctx.shadowOffsetY = 2;
+    ctx.fillText(text, 135, 20);
+    
+    //TIMER BAR          
+    let barWidth = 480;         
+    let barHeight = 30;         
+    let fillWidth = (timer / maxTime) * barWidth;
+    let isCritical = timer <= 10;
+    let pulse = isCritical ? Math.abs(Math.sin(counter * 1.5)) * 40 + 10 : 0; 
+    
+    
+    //Pulses when under 10 seconds
+    if (isCritical) {
+        ctx.shadowColor = "rgba(255,255,255,1.00)";
+        ctx.shadowBlur = pulse;
+    }
+    
+    //Color of Bar
+    ctx.fillStyle = timer <= 10?"rgba(255,0,0,1.00)":"rgba(0,255,0,1.00)"; 
+    ctx.fillRect(0, 575, fillWidth, barHeight);
+    ctx.restore();
+
+// <<<END HERE<<<END HERE<<<END HERE<<<END HERE<<<END HERE<<<END HERE
+///////////////////////////////////////////////////////////////////
+
+// CREDITS
+
+ctx.save();
+var credits = "Bryton Montgomery, Vinyl Rush OOP Game, FMX 310, SP 2025";
+ctx.font = 'bold 12px Helvetica';
+ctx.fillStyle = "rgba(0,0,0,1)"; // change the color here
+ctx.shadowColor = "rgba(255,255,255,1)"; // change shadow color here
+ctx.shadowBlur = 8;
+ctx.shadowOffsetX = 3;
+ctx.shadowOffsetY = 3;
+ctx.fillText(credits, 10, canvas.height - 10); // CHANGE THE LOCATION HERE
+ctx.restore();
+
+//////////////////////////////////////////////////////////////////
+// HTML DISPLAY FIELD FOR TESTING PURPOSES
+
+display.innerHTML = Math.round(mouseX) + " || " + Math.round(mouseY) + " || counter = " + Math.round(counter);
+
+/////////////////////////////////////////////////////////////////
+// LAST LINE CREATES THE ANIMATION
+
+requestAnimFrame(draw); // CALLS draw() every nth of a second
+
+}
+
+</script>
+
+</body>
+</html>
