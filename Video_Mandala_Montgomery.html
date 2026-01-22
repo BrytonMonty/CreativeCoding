@@ -1,0 +1,377 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="UTF-8">
+
+<title> Video Mandala </title>
+
+<!-- import external .js scripts here -->
+
+<!-- <script type="text/javascript" src="#" ></script> -->
+
+<!-- modify CSS properties here -->
+
+<style type="text/css">
+body,td,th {
+font-family: Monaco, "Courier New", "monospace";
+font-size: 14px;
+color: rgba(255,255,255,1);
+}
+
+body {
+background-color: rgba(0,0,0,1);
+}
+
+#container {
+position: relative;
+text-align: left;
+width: 95%;
+height: 800px;
+}
+
+#fmxCanvas {
+position: relative;
+background-color:rgba(255,255,255,1);
+border: rgba(255,255,255,1) thin dashed;
+margin: 10px;
+cursor: hidden;
+display: inline-block;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div id="container">
+<!-- START HTML CODE HERE -->
+<video controls autoplay muted playsinline loop width="1" id="vid1">
+
+<source src="Corn.mp4" type="video/mp4" />
+
+</video>
+
+<video controls autoplay muted playsinline loop width="1" id="vid2">
+
+<source src="BikeJump.mp4" type="video/mp4" />
+
+</video>
+
+<video controls autoplay muted playsinline loop width="1" id="vid3">
+
+<source src="me.mp4" type="video/mp4" />
+
+</video>
+
+<video controls autoplay muted playsinline loop width="1" id="vid4">
+
+<source src="otherbike.mp4" type="video/mp4" />
+
+</video>
+
+
+<video controls autoplay muted playsinline loop width="1" id="vid5">
+
+<source src="background.mp4" type="video/mp4" />
+
+<div id="display"></div>
+
+</video>
+<br><br>
+
+<canvas id="fmxCanvas" width="800" height="600"></canvas>
+
+
+
+
+<br><br>
+
+Add your personal notes or additional information here
+
+<!-- FINISH HTML CODE HERE -->
+</div>
+
+<script>
+
+///////////////////////////////////////////////////////////////////////
+// DECLARE requestAnimFrame
+
+var rAF = window.requestAnimFrame ||
+window.mozRequestAnimFrame ||
+window.webkitRequestAnimFrame ||
+window.msRequestAnimFrame;
+
+var fps = 30;
+
+window.requestAnimFrame = (
+
+function(callback) {
+
+return rAF ||
+
+function(callback) {
+window.setTimeout(callback, 1000 / fps);
+};
+
+})();
+
+///////////////////////////////////////////////////////////////////////
+// DEFINE GLOBAL VARIABLES HERE
+
+var canvas;
+var ctx;
+canvas = document.getElementById("fmxCanvas");
+ctx = canvas.getContext("2d");
+
+var canvas1;
+var ctx1;
+canvas1 = document.createElement("canvas");
+ctx1 = canvas1.getContext("2d");
+
+canvas1.width = canvas.width;
+canvas1.height = canvas.height;
+
+var canvas2;
+var ctx2;
+canvas2 = document.createElement("canvas");
+ctx2 = canvas2.getContext("2d");
+
+canvas2.width = canvas.width;
+canvas2.height = canvas.height;
+
+var display;
+display = document.getElementById('display');
+
+var counter;
+
+///////////////////////////////////////////////////////////////////////
+// DEFINE YOUR GLOBAL VARIABLES HERE
+var vid1 = document.getElementById('vid1');
+
+var vid2 = document.getElementById('vid2');
+	
+var vid3 = document.getElementById('vid3');
+
+var vid4 = document.getElementById('vid4');
+	
+var vid5 = document.getElementById('vid5');
+
+///////////////////////////////////////////////////////////////////////
+// CALL THE EVENT LISTENERS
+
+window.addEventListener("load", setup, false);
+
+//////////////////////////////////////////////////////////////////////
+// ADD EVENT LISTENERS
+
+canvas.addEventListener("mousemove", mousePos, false);
+
+//////////////////////////////////////////////////////////////////////
+// MOUSE COORDINATES
+
+var stage, mouseX, mouseY;
+
+function mousePos(event) {
+stage = canvas.getBoundingClientRect();
+mouseX = event.clientX - stage.left;
+mouseY = event.clientY - stage.top;
+}
+
+/////////////////////////////////////////////////////////////////////
+// INITIALIZE THE STARTING FUNCTION
+
+function setup() {
+
+/////////////////////////////////////////////////////////////////////
+// DECLARE STARTING VALUES OF GLOBAL VARIABLES
+
+counter = 0;
+mouseX = canvas.width/2;
+mouseY = canvas.height/2;
+
+/////////////////////////////////////////////////////////////////////
+// CALL SUBSEQUENT FUNCTIONS, as many as you need
+
+clear(); // COVER TRANSPARENT CANVAS OR CLEAR CANVAS
+
+draw(); // THIS IS WHERE EVERYTHING HAPPENS
+
+}
+
+////////////////////////////////////////////////////////////////////
+// CLEAR THE CANVAS FOR ANIMATION
+// USE THIS AREA TO MODIFY BKGD
+
+function clear() {
+
+ctx.clearRect(0,0,canvas.width, canvas.height);
+ctx1.clearRect(0,0,canvas.width, canvas.height);
+ctx2.clearRect(0,0,canvas.width, canvas.height);
+
+// clear additional ctxs here if you have more than canvas1
+
+}
+
+////////////////////////////////////////////////////////////////////
+// THIS IS WHERE EVERYTHING HAPPENS
+
+function draw() {
+
+counter += 0.1; // EASIER FOR SINE COSINE FUNCTIONS
+
+if (counter > Math.PI*200) { counter = 0; } // RESET COUNTER
+
+clear(); // USE THIS TO REFRESH THE FRAME AND CLEAR CANVAS
+
+////////////////////////////////////////////////////////////////////
+// >>>START HERE>>>START HERE>>>START HERE>>>START HERE>>>START HERE
+
+//BACKGROUND
+ctx.beginPath();
+    ctx.drawImage(vid5,0, 0,canvas.width,canvas.height);
+ctx.closePath();
+
+//ME IN RED SHIRT
+var amount = 50;
+
+for (var i=0; i<amount; i++){
+    ctx.save();
+    ctx.translate(400,300);
+    ctx.rotate(i/amount * Math.PI * 2 - counter/20);
+
+// MASK
+let limitedX = (mouseX / canvas.width) * 200;
+ctx.save();
+ctx.beginPath();
+    ctx.arc(0, 134,200, 96, Math.PI*2, true);
+ctx.closePath();
+ctx.clip(); 
+ctx.drawImage(vid3,limitedX, -50);
+ctx.restore();
+
+ctx.restore();
+
+}
+
+//CRASH BIKE JUMP
+var amount = 20;
+ctx.save();
+
+for (var i=0; i<amount; i++){
+    ctx.save();
+    ctx.translate(400,300);
+    ctx.rotate(i/amount * Math.PI * 2 + counter/10);
+
+// MASK
+ctx.save();
+ctx.beginPath();
+    ctx.moveTo(0, 0); 
+    ctx.quadraticCurveTo(660,70, 501,76);
+    ctx.quadraticCurveTo(88,434, 0,0);
+ctx.closePath();
+ctx.clip(); 
+ctx.drawImage(vid4,-10, -50);
+ctx.restore();
+
+ctx.restore();
+
+}
+
+
+//ME EATING CORN
+var amount = 10;
+
+for (var i=0; i<amount; i++){
+    ctx.save();
+    ctx.translate(400,300);
+    ctx.rotate(i/amount * Math.PI * 2 - counter/3);
+
+// MASK
+let limitedY = (mouseY / canvas.width) * 160;
+ctx.save();
+ctx.beginPath();
+    ctx.arc(100, 96,100, 96, Math.PI*2, true);
+ctx.closePath();
+ctx.clip(); 
+ctx.drawImage(vid1,-10, limitedY);
+ctx.restore();
+
+ctx.restore();
+
+}
+
+//Other Bike Jump
+var amount = 7 ;
+
+for (var i=0; i<amount; i++){
+    ctx.save();
+    ctx.translate(400,300);
+    ctx.rotate(i/amount * Math.PI * 2 + counter/2);
+
+// MASK
+ctx.save();
+ctx.beginPath();
+    ctx.arc(10, 96,15, 20, Math.PI*2, true);
+ctx.closePath();
+ctx.clip(); 
+ctx.drawImage(vid2,-10, -50);
+ctx.restore();
+
+ctx.restore();
+
+}
+
+
+
+
+
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+// <<<END HERE<<<END HERE<<<END HERE<<<END HERE<<<END HERE<<<END HERE
+///////////////////////////////////////////////////////////////////
+
+// CREDITS
+
+ctx.save();
+var credits = "Bryton Montgomery, Video Mandala, FMX 310, SP 2025";
+ctx.font = 'bold 12px Helvetica';
+ctx.fillStyle = "rgba(0,0,0,1)"; // change the color here
+ctx.shadowColor = "rgba(255,255,255,1)"; // change shadow color here
+ctx.shadowBlur = 12;
+ctx.shadowOffsetX = 2;
+ctx.shadowOffsetY = 2;
+ctx.fillText(credits, 10, canvas.height - 10); // CHANGE THE LOCATION HERE
+ctx.restore();
+
+//////////////////////////////////////////////////////////////////
+// HTML DISPLAY FIELD FOR TESTING PURPOSES
+
+display.innerHTML = Math.round(mouseX) + " || " + Math.round(mouseY) + " || counter = " + Math.round(counter);
+
+/////////////////////////////////////////////////////////////////
+// LAST LINE CREATES THE ANIMATION
+
+requestAnimFrame(draw); // CALLS draw() every nth of a second
+
+}
+
+</script>
+
+</body>
+</html>
