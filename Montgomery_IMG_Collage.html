@@ -1,0 +1,384 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="UTF-8">
+
+<title> Montgomery Image Collage </title>
+
+<!-- import external .js scripts here -->
+
+<!-- <script type="text/javascript" src="#" ></script> -->
+
+<!-- modify CSS properties here -->
+
+<style type="text/css">
+body,td,th {
+font-family: Monaco, "Courier New", "monospace";
+font-size: 14px;
+color: rgba(255,255,255,1);
+}
+
+body {
+background-color: rgba(0,0,0,1);
+}
+
+#container {
+position: relative;
+text-align: left;
+width: 95%;
+height: 800px;
+}
+
+#fmxCanvas {
+position: relative;
+background-color:rgba(255,255,255,1);
+border: rgba(255,255,255,1) thin dashed;
+margin: 10px;
+cursor: crosshair;
+display: inline-block;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div id="container">
+<!-- START HTML CODE HERE -->
+
+<canvas id="fmxCanvas" width="1000" height="752"></canvas>
+
+<div id="display"></div>
+
+<br><br>
+
+<img src="me.png" id="bkgd01" />
+<img src="laptop.png" id="laptop" />
+<img src="thought.png" id="thought" />
+<img src="soda.png" id="soda" />
+<img src="gum.png" id="gum" />
+<img src="pizza.png" id="pizza" />
+<img src="phone.png" id="phone" />
+<img src="bryton.png" id="bryton" />
+<img src="coffee.png" id="coffee" />
+<img src="brytontwo.png" id="brytontwo" />
+
+<!-- FINISH HTML CODE HERE -->
+</div>
+
+<script>
+
+///////////////////////////////////////////////////////////////////////
+// DECLARE requestAnimFrame
+
+var rAF = window.requestAnimFrame ||
+window.mozRequestAnimFrame ||
+window.webkitRequestAnimFrame ||
+window.msRequestAnimFrame;
+
+var fps = 30;
+
+window.requestAnimFrame = (
+
+function(callback) {
+
+return rAF ||
+
+function(callback) {
+window.setTimeout(callback, 1000 / fps);
+};
+
+})();
+
+///////////////////////////////////////////////////////////////////////
+// DEFINE GLOBAL VARIABLES HERE
+
+var canvas;
+var ctx;
+canvas = document.getElementById("fmxCanvas");
+ctx = canvas.getContext("2d");
+
+var canvas1;
+var ctx1;
+canvas1 = document.createElement("canvas");
+ctx1 = canvas1.getContext("2d");
+
+canvas1.width = canvas.width;
+canvas1.height = canvas.height;
+
+var canvas2;
+var ctx2;
+canvas2 = document.createElement("canvas");
+ctx2 = canvas2.getContext("2d");
+
+canvas2.width = canvas.width;
+canvas2.height = canvas.height;
+
+var display;
+display = document.getElementById('display');
+
+var counter;
+
+///////////////////////////////////////////////////////////////////////
+// DEFINE YOUR GLOBAL VARIABLES HERE
+var bkgd01 = new Image();
+bkgd01 = document.getElementById('bkgd01');
+
+var laptop = new Image();
+laptop = document.getElementById('laptop');
+
+var gum = new Image();
+gum = document.getElementById('gum');
+
+var soda = new Image();
+soda = document.getElementById('soda');
+
+var thought = new Image();
+thought = document.getElementById('thought');
+
+var pizza = new Image();
+pizza = document.getElementById('pizza');
+
+var phone = new Image();
+phone = document.getElementById('phone');
+
+var bryton = new Image();
+bryton = document.getElementById('bryton');
+
+var coffee = new Image();
+coffee = document.getElementById('coffee');
+
+var brytontwo = new Image();
+brytontwo = document.getElementById('brytontwo');
+
+
+///////////////////////////////////////////////////////////////////////
+// CALL THE EVENT LISTENERS
+
+window.addEventListener("load", setup, false);
+
+//////////////////////////////////////////////////////////////////////
+// ADD EVENT LISTENERS
+
+canvas.addEventListener("mousemove", mousePos, false);
+
+//////////////////////////////////////////////////////////////////////
+// MOUSE COORDINATES
+
+var stage, mouseX, mouseY;
+
+function mousePos(event) {
+stage = canvas.getBoundingClientRect();
+mouseX = event.clientX - stage.left;
+mouseY = event.clientY - stage.top;
+}
+
+/////////////////////////////////////////////////////////////////////
+// INITIALIZE THE STARTING FUNCTION
+
+function setup() {
+
+/////////////////////////////////////////////////////////////////////
+// DECLARE STARTING VALUES OF GLOBAL VARIABLES
+
+counter = 0;
+mouseX = canvas.width/2;
+mouseY = canvas.height/2;
+
+/////////////////////////////////////////////////////////////////////
+// CALL SUBSEQUENT FUNCTIONS, as many as you need
+
+clear(); // COVER TRANSPARENT CANVAS OR CLEAR CANVAS
+
+draw(); // THIS IS WHERE EVERYTHING HAPPENS
+
+}
+
+////////////////////////////////////////////////////////////////////
+// CLEAR THE CANVAS FOR ANIMATION
+// USE THIS AREA TO MODIFY BKGD
+
+function clear() {
+
+ctx.clearRect(0,0,canvas.width, canvas.height);
+ctx1.clearRect(0,0,canvas.width, canvas.height);
+ctx2.clearRect(0,0,canvas.width, canvas.height);
+
+// clear additional ctxs here if you have more than canvas1
+
+}
+
+////////////////////////////////////////////////////////////////////
+// THIS IS WHERE EVERYTHING HAPPENS
+
+function draw() {
+
+counter += 0.1; // EASIER FOR SINE COSINE FUNCTIONS
+
+if (counter > Math.PI*200) { counter = 0; } // RESET COUNTER
+
+clear(); // USE THIS TO REFRESH THE FRAME AND CLEAR CANVAS
+
+////////////////////////////////////////////////////////////////////
+// >>>START HERE>>>START HERE>>>START HERE>>>START HERE>>>START HERE
+
+//Variables
+var rr,gg, bb
+rr = Math.round(mouseY/canvas.height * 255);
+gg = Math.round(mouseX/canvas.width * 255) ;
+bb = 255 - rr;
+
+let invertAmount = (mouseY / canvas.height);
+let blurAmount = (mouseX / canvas.width) * 18;
+let hueAmount = (mouseY / canvas.height) * 180;
+let blurAmount2 = (mouseY / canvas.width) * 10;
+let grayAmount = (mouseX / canvas.width) * 100;
+let rotateAmount = (mouseY / canvas.width) * 10;
+let opacAmount = (mouseX / canvas.width) * 100;
+let centerX = 397 + 42 / 2;
+let centerY = 249+ 110 / 2;
+
+//BACKGROUND
+ctx.save();
+ctx.filter = "blur(" + blurAmount + "px) hue-rotate("+hueAmount+"deg)";
+ctx.beginPath();
+ctx.drawImage(bkgd01,0,0,canvas.width,canvas.height);
+ctx.closePath();
+ctx.restore();
+    
+ 
+//THOUGHT BUBBLE
+ctx.save();
+ctx.beginPath();
+    ctx.drawImage(thought,238, -25);
+ctx.closePath();
+ctx.restore();
+
+
+//GUM
+ctx.save();
+ctx.filter = "contrast(300%) brightness(120%) saturate(200%) hue-rotate(45deg) opacity("+opacAmount+"%)";
+ctx.rotate(0.5);
+ctx.beginPath();
+    ctx.drawImage(gum,587, -200);
+ctx.closePath();
+ctx.restore();
+
+
+//LAPTOP
+ctx.save();
+ctx.filter = "blur(" + blurAmount2 + "px) invert(100%)"
+ctx.beginPath();
+    ctx.drawImage(laptop,109, 522);
+ctx.closePath();
+ctx.restore();
+
+
+//SODA
+ctx.save();
+ctx.filter = "sepia("+mouseY+"%) opacity("+opacAmount+"%)";
+ctx.translate(centerX, centerY);
+ctx.rotate(counter/rotateAmount)
+ctx.beginPath();
+    ctx.drawImage(soda, -42 *1.5/ 2, -110 *1.5 / 2, 42*1.5, 110*1.5);
+ctx.closePath();
+ctx.restore();
+
+//Pizza
+ctx.save();
+ctx.filter = "grayscale("+grayAmount+"%) opacity("+opacAmount+"%)";
+ctx.beginPath();
+    ctx.drawImage(pizza, 430,100)
+ctx.closePath();
+ctx.restore();
+
+//Phone
+ctx.save();
+ctx.filter = "saturate(100%) opacity("+opacAmount+"%)";
+ctx.beginPath();
+    ctx.drawImage(phone,260,546)
+ctx.closePath();
+ctx.restore();
+
+//Other Picture of Me
+ctx.save();
+ctx.filter = "drop-shadow(16px 16px 20px rgba("+rr+","+gg+","+bb+"))brightness(0.6)";
+ctx.beginPath();
+    ctx.drawImage(bryton,740,388)
+ctx.closePath();
+ctx.restore();
+
+
+
+//Coffee
+ctx.save();
+ctx.shadowColor = "rgba(255,0,0,1)";
+ctx.shadowBlur = 10; 
+ctx.beginPath();
+    ctx.drawImage(coffee,887,615);
+ctx.closePath();
+ctx.restore();
+
+//Me Three Right
+ctx.save();
+ctx.filter = "invert("+invertAmount+") drop-shadow(16px 16px 20px rgba("+rr+","+gg+","+bb+"))brightness(0.6)";
+ctx.beginPath();
+    ctx.drawImage(brytontwo,-1,400);
+ctx.closePath();
+ctx.restore();
+
+
+
+
+
+
+
+
+    
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+// <<<END HERE<<<END HERE<<<END HERE<<<END HERE<<<END HERE<<<END HERE
+///////////////////////////////////////////////////////////////////
+
+// CREDITS
+
+ctx.save();
+var credits = "Bryton Montgomery, Image Collage, FMX 310, SP 2025";
+ctx.font = 'bold 12px Helvetica';
+ctx.fillStyle = "rgba(0,0,0,1)"; // change the color here
+ctx.shadowColor = "rgba(255,255,255,1)"; // change shadow color here
+ctx.shadowBlur = 12;
+ctx.shadowOffsetX = 2;
+ctx.shadowOffsetY = 2;
+ctx.fillText(credits, 10, canvas.height - 10); // CHANGE THE LOCATION HERE
+ctx.restore();
+
+//////////////////////////////////////////////////////////////////
+// HTML DISPLAY FIELD FOR TESTING PURPOSES
+
+display.innerHTML = Math.round(mouseX) + " || " + Math.round(mouseY) + " || counter = " + Math.round(counter);
+
+/////////////////////////////////////////////////////////////////
+// LAST LINE CREATES THE ANIMATION
+
+requestAnimFrame(draw); // CALLS draw() every nth of a second
+
+}
+
+</script>
+
+</body>
+</html>
